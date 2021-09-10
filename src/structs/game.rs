@@ -40,8 +40,8 @@ impl Game {
             Direction::UP       => [pos[0],     pos[1] - 1  ],
             Direction::DOWN     => [pos[0],     pos[1] + 1  ],
         };
-        self.snake = self.snake.set_head_x(pos[0]);
-        self.snake = self.snake.set_head_y(pos[1]);
+        self.snake = self.snake.set_head_x((self.size_x + pos[0]) % self.size_x);
+        self.snake = self.snake.set_head_y((self.size_y + pos[1]) % self.size_y);
     }
 
     pub fn set_snake_facing(&mut self, direction: Direction) -> () {

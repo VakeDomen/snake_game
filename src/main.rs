@@ -3,7 +3,6 @@ mod structs;
 
 
 use std::time;
-use std::cmp;
 use piston_window::*;
 use structs::game::Game;
 use structs::snake::Direction;
@@ -19,33 +18,12 @@ fn main() {
         .unwrap();
 
     let mut update = time::Instant::now();
-    let loop_time = time::Duration::from_millis(100);
+    let loop_time = time::Duration::from_millis(1000);
     while let Some(event) = window.next() {
-        window.draw_2d(&event, |context, graphics, _device| {
-            clear(
-                [1.0; 4], 
-                graphics
-            );
-
-            let head: [f64; 4] = [
-                (game.get_snake().get_position()[0] * game.block_size()[0]) as f64,
-                (game.get_snake().get_position()[1] * game.block_size()[1]) as f64,
-                game.block_size()[0] as f64,
-                game.block_size()[1] as f64,
-            ];
-
-            rectangle(
-                [1.0, 0.0, 0.0, 1.0], // red
-                head,
-                context.transform,
-                graphics
-            );
-            
-            if update.elapsed() > loop_time {
-                game.move_snake();
-                update = time::Instant::now();
-            }
-        });
+        if update.elapsed() > loop_time {
+            game.move_snake();
+            update = time::Instant::now();
+        }
         if let Some(Button::Keyboard(Key::A)) = event.press_args() {
             if game.get_snake().get_facing() != Direction::RIGHT {
                 game.set_snake_facing(Direction::LEFT);
@@ -66,5 +44,25 @@ fn main() {
                 game.set_snake_facing(Direction::RIGHT);
             }
         }
+        window.draw_2d(&event, |context, graphics, _device| {
+            clear(
+                [1.0; 4], 
+                graphics
+            );
+
+            let head: [f64; 4] = [
+                (game.get_snake().get_position()[0] * game.block_size()[0]) as f64,
+                (game.get_snake().get_position()[1] * game.block_size()[1]) as f64,
+                game.block_size()[0] as f64,
+                game.block_size()[1] as f64,
+            ];
+
+            rectangle(
+                [1.0, 0.0, 0.0, 1.0], // red
+                head,
+                context.transform,
+                graphics
+            );
+        });
     }
 }
