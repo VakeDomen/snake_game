@@ -1,4 +1,5 @@
 use super::snake::*;
+use piston_window::*;
 
 pub struct Game {
     pub snake: Snake,
@@ -52,6 +53,29 @@ impl Game {
     pub fn snake_eat(&mut self) -> () {
         self.snake.eat()
     }
+
+    pub fn draw<G: Graphics>(&self, context: piston_window::Context, graphics: &mut G) -> () {
+        self.draw_head(context, graphics);
+        self.draw_body(context, graphics);
+    }
    
+    fn draw_head<G: Graphics>(&self, context: piston_window::Context, graphics: &mut G) ->() {
+        let head: [f64; 4] = [
+            (self.get_snake().get_position()[0] * self.block_size()[0]) as f64,
+            (self.get_snake().get_position()[1] * self.block_size()[1]) as f64,
+            self.block_size()[0] as f64,
+            self.block_size()[1] as f64,
+        ];
+        rectangle(
+            [1.0, 0.0, 0.0, 1.0], // red
+            head,
+            context.transform,
+            graphics
+        );
+    }
+
+    fn draw_body<G: Graphics>(&self, context: piston_window::Context, graphics: &mut G) ->() {
+        self.snake.draw(context, graphics, self.block_size_x, self.block_size_y)
+    }
 }
 

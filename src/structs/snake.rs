@@ -1,4 +1,5 @@
 use super::body::Body;
+use piston_window::*;
 
 pub struct Snake {
     head_x: u32,
@@ -44,6 +45,9 @@ impl Snake {
         self.body.move_body([self.head_x, self.head_y])
     }
 
+    pub fn draw<G: Graphics>(&self, context: piston_window::Context, graphics: &mut G, w: u32, h: u32) -> () {
+        self.body.draw(context, graphics, w, h);
+    }
 }
 
 #[derive(Clone, Copy, PartialEq)]

@@ -1,3 +1,5 @@
+use piston_window::*;
+
 pub struct Body {
     head: Option<Node>
 } 
@@ -37,6 +39,13 @@ impl Body {
             None => (),
         }
     }
+
+    pub fn draw<G: Graphics>(&self, context: piston_window::Context, graphics: &mut G, w: u32, h: u32) -> () {
+        match &self.head {
+            Some(child) => child.draw(context, graphics, w, h),
+            None => (),
+        }
+    }
 }
 
 impl Node {
@@ -73,5 +82,24 @@ impl Node {
             },
         }
         self.body = pos;
+    }
+
+    fn draw<G: Graphics>(&self, context: piston_window::Context, graphics: &mut G, w: u32, h: u32) -> () {
+        match &self.tail {
+            Some(child) => child.draw(context, graphics, w, h),
+            None => (),
+        }
+        let part: [f64; 4] = [
+            self.body[0] as f64 * w as f64,
+            self.body[1] as f64 * h as f64,
+            w as f64, 
+            h as f64,
+        ];
+        rectangle(
+            [0.0, 0.0, 1.0, 1.0], // red
+            part,
+            context.transform,
+            graphics
+        );
     }
 }

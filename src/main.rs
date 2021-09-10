@@ -26,7 +26,6 @@ fn main() {
             update = time::Instant::now();
         }
         if update2.elapsed() > loop_time * 10{
-            println!("drek");
             game.snake_eat();
             update2 = time::Instant::now();
         }
@@ -55,20 +54,7 @@ fn main() {
                 [1.0; 4], 
                 graphics
             );
-
-            let head: [f64; 4] = [
-                (game.get_snake().get_position()[0] * game.block_size()[0]) as f64,
-                (game.get_snake().get_position()[1] * game.block_size()[1]) as f64,
-                game.block_size()[0] as f64,
-                game.block_size()[1] as f64,
-            ];
-
-            rectangle(
-                [1.0, 0.0, 0.0, 1.0], // red
-                head,
-                context.transform,
-                graphics
-            );
+            game.draw(context, graphics)
         });
     }
 }
