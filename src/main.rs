@@ -18,11 +18,17 @@ fn main() {
         .unwrap();
 
     let mut update = time::Instant::now();
-    let loop_time = time::Duration::from_millis(1000);
+    let mut update2 = time::Instant::now();
+    let loop_time = time::Duration::from_millis(100);
     while let Some(event) = window.next() {
         if update.elapsed() > loop_time {
             game.move_snake();
             update = time::Instant::now();
+        }
+        if update2.elapsed() > loop_time * 10{
+            println!("drek");
+            game.snake_eat();
+            update2 = time::Instant::now();
         }
         if let Some(Button::Keyboard(Key::A)) = event.press_args() {
             if game.get_snake().get_facing() != Direction::RIGHT {

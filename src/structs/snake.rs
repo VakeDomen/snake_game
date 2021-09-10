@@ -1,41 +1,47 @@
-#[derive(Clone, Copy)]
+use super::body::Body;
+
 pub struct Snake {
-    length: i32,
     head_x: u32,
     head_y: u32,
-    facing: Direction
+    facing: Direction,
+    body: Body,
 }
 
 impl Snake {
     pub fn new() -> Self {
         Self {
-            length: 1,
             head_x: 2,
             head_y: 3,
-            facing: Direction::DOWN
+            facing: Direction::DOWN,
+            body: Body::new(),
         }
     }
-    pub fn get_position(self) -> [u32; 2] {
+    pub fn get_position(&self) -> [u32; 2] {
         [self.head_x, self.head_y]
     }
 
-    pub fn get_facing(self) -> Direction {
+    pub fn get_facing(&self) -> Direction {
         self.facing
     }
 
-    pub fn set_head_x(mut self, pos: u32) -> Self {
+    pub fn set_head_x(&mut self, pos: u32) -> () {
         self.head_x = pos;
-        self
     }
 
-    pub fn set_head_y(mut self, pos: u32) -> Self {
+    pub fn set_head_y(&mut self, pos: u32) -> () {
         self.head_y = pos;
-        self
     }
 
-    pub fn set_facing(mut self, direction: Direction) -> Self {
+    pub fn set_facing(&mut self, direction: Direction) -> () {
         self.facing = direction;
-        self
+    }
+
+    pub fn eat(&mut self) -> () {
+        self.body.mark_eaten([self.head_x, self.head_y])
+    }
+
+    pub fn move_body(&mut self) -> () {
+        self.body.move_body([self.head_x, self.head_y])
     }
 
 }
