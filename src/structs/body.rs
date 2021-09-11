@@ -46,6 +46,13 @@ impl Body {
             None => (),
         }
     }
+
+    pub fn is_on_position(&self, pos_x: u32, pos_y: u32) -> bool {
+        match &self.head {
+            Some(child) => child.is_on_position(pos_x, pos_y),
+            None => false,
+        }
+    }
 }
 
 impl Node {
@@ -96,10 +103,20 @@ impl Node {
             h as f64,
         ];
         rectangle(
-            [0.0, 0.0, 1.0, 1.0], // red
+            [0.0, 0.3, 0.1, 1.0], 
             part,
             context.transform,
             graphics
         );
+    }
+
+    fn is_on_position(&self, pos_x: u32, pos_y: u32) -> bool {
+        if self.body[0] == pos_x && self.body[1] == pos_y {
+            return true
+        }
+        match &self.tail {
+            Some(child) => child.is_on_position(pos_x, pos_y),
+            None => false,
+        }
     }
 }

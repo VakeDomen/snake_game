@@ -18,16 +18,11 @@ fn main() {
         .unwrap();
 
     let mut update = time::Instant::now();
-    let mut update2 = time::Instant::now();
     let loop_time = time::Duration::from_millis(100);
     while let Some(event) = window.next() {
         if update.elapsed() > loop_time {
             game.move_snake();
             update = time::Instant::now();
-        }
-        if update2.elapsed() > loop_time * 10{
-            game.snake_eat();
-            update2 = time::Instant::now();
         }
         if let Some(Button::Keyboard(Key::A)) = event.press_args() {
             if game.get_snake().get_facing() != Direction::RIGHT {
@@ -51,10 +46,14 @@ fn main() {
         }
         window.draw_2d(&event, |context, graphics, _device| {
             clear(
-                [1.0; 4], 
+                [0.8; 4], 
                 graphics
             );
             game.draw(context, graphics)
         });
+
+        if game.is_over() {
+            game = Game::new();
+        }
     }
 }

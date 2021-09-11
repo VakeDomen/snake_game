@@ -48,6 +48,10 @@ impl Snake {
     pub fn draw<G: Graphics>(&self, context: piston_window::Context, graphics: &mut G, w: u32, h: u32) -> () {
         self.body.draw(context, graphics, w, h);
     }
+
+    pub fn bit_tail(&self) -> bool {
+        return self.body.is_on_position(self.head_x, self.head_y)
+    }
 }
 
 #[derive(Clone, Copy, PartialEq)]
